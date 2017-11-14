@@ -153,12 +153,41 @@ public class playerBoard {
             shot = 'F';     // F means this position already shot
             return shot;
         } else {
-            return 'z';     // in case error
+            return '~';     // in case error
         }
     }
 
     public char getBoardByPos(int row, int col) {
-        return board[row][col];
+
+        if (row >= 0 && row <= 10 && col >= 0 && col <= 10)
+            return board[row][col];
+        else
+            return '~';
+    }
+
+    public boolean checkLose() {
+        int a = 0, b = 0, d = 0, s = 0, p = 0;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (board[i][j] == 'a')
+                    a++;
+                else if (board[i][j] == 'b')
+                    b++;
+                else if (board[i][j] == 'd')
+                    d++;
+                else if (board[i][j] == 's')
+                    s++;
+                else if (board[i][j] == 'p')
+                    p++;
+            }
+        }
+
+        // if all ship was shot, this player lose, return true
+        if (a == 5 && b == 4 && d == 3 && s == 3 && p == 2)
+            return true;
+
+        // otherwise, this player not lose yet, return false
+        return false;
     }
 }
 
