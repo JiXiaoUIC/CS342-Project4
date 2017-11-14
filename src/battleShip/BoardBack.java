@@ -3,8 +3,8 @@ package battleShip;
 public class BoardBack {
 
     public BoardBack() {
-        playerBoard playerServer = new playerBoard();
-        playerBoard playerClient = new playerBoard();
+        PlayerBoard playerServer = new PlayerBoard();
+        PlayerBoard playerClient = new PlayerBoard();
     }
 
 }

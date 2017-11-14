@@ -1,6 +1,6 @@
 package battleShip;
 
-public class playerBoard {
+public class PlayerBoard {
     // 2D array for hold the battleship info
     private char[][] board; // board[row][col]
     /*
@@ -15,7 +15,7 @@ public class playerBoard {
 
 
 
-    public playerBoard() {
+    public PlayerBoard() {
         // fill the board by 0 for no ship at the position
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
