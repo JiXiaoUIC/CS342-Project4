@@ -7,30 +7,77 @@ public class BoardBack {
     // 2 for client win
     // 0 for no winner yet
 
-    public PlayerBoard playerServer;
-    public PlayerBoard playerClient;
+    public UserPlayer playerServer;
+    public UserPlayer playerClient;
 
     public BoardBack() {
         // set no one won the game yet
         winner = 0;
 
         // initialize the two player objects
-        playerServer = new PlayerBoard();
-        playerClient = new PlayerBoard();
+        playerServer = new UserPlayer();
+        playerClient = new UserPlayer();
     }
 
+    // this function used for restart the game, it clean all the ship on board for both player
     public void startGame() {
-        playerServer = new PlayerBoard();
-        playerClient = new PlayerBoard();
+        playerServer = new UserPlayer();
+        playerClient = new UserPlayer();
     }
 
-    public boolean placeShip(PlayerBoard player, char ship, int row, int col, int verOrHor) {
+    // placeShip(player, ship type, row num, col num, 1 for vertical / 2 for horizontal)
+    public boolean placeShip(UserPlayer player, char ship, int row, int col, int verOrHor) {
+        // in case wrong char input, return false, fail to place ship
+        if (ship != 'A' && ship != 'B' && ship != 'D' && ship != 'S' && ship != 'P')
+            return false;
+
+        // place ship
         boolean placeFinish = player.setShip(ship, row, col, verOrHor);
         return placeFinish;
     }
 
+    // this methos can only use after ship placed and before the game start
+    public boolean deleteShip(UserPlayer player, char ship, int row, int col) {
+        // in case wrong char input, return false, fail to place ship
+        if (ship != 'A' && ship != 'B' && ship != 'D' && ship != 'S' && ship != 'P')
+            return false;
+
+        boolean shipReplace = false;
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (player.board[i][j] == ship)
+                {
+                    shipReplace = true;
+                    player.board[i][j] = '0';
+                }
+            }
+        }
+
+        if (shipReplace == false)
+            return false;
+
+        return true;
+    }
+
+    public boolean replaceShip(UserPlayer player, char ship, int row, int col, int verOrHor) {
+        // delete ship
+        boolean shipDeleted;
+        shipDeleted = deleteShip(player, ship, row, col);
+        if (shipDeleted == false)
+            return false;   // in case it did not successful delete ship
+
+        // place ship
+        boolean shipPlaced;
+        shipPlaced = placeShip(player, ship, row, col, verOrHor);
+        if (shipPlaced == false)
+            return false;   // in case it did not successful place ship
+
+        return true;
+    }
+
     // this methos can only use before battle start
-    public boolean allShipsWasSet(PlayerBoard player) {
+    public boolean checkAllShipsWasSet(UserPlayer player) {
         int checkA = 0;
         int checkB = 0;
         int checkD = 0;
@@ -72,7 +119,7 @@ public class BoardBack {
         return playerServer.beHit(row, col);
     }
 
-    public void nuclearBomb(PlayerBoard attacker, PlayerBoard playerBeHit) {
+    public void nuclearBomb(UserPlayer attacker, UserPlayer playerBeHit) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (playerBeHit.board[i][j] == '0' || playerBeHit.board[i][j] == '1')
@@ -91,16 +138,24 @@ public class BoardBack {
 
     // this method should be use after every time that a user do something
     public boolean checkGameFinish() {
-        if (playerServer.victory == 1) {
+        if (playerServer.victory == 1 || playerClient.victory == -1) {
             winner = 1;
             return true;
-        } else if (playerClient.victory == 1) {
+        } else if (playerClient.victory == 1 || playerServer.victory == -1) {
             winner = 2;
             return true;
         }
 
+        // else no one won or lose, return false;
         return false;
     }
 
+    public char getBoardByPos(UserPlayer player, int row, int col) {
+        if (row >= 0 && row <= 9 && col >= 0 && col <= 9)
+            return player.board[row][col];
+
+        // in case the unavailable position
+        return '~';
+    }
 
 }

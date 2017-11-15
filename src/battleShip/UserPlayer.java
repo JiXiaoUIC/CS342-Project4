@@ -1,6 +1,6 @@
 package battleShip;
 
-public class PlayerBoard {
+public class UserPlayer {
     // 2D array for hold the battleship info
     public char[][] board;
     // format: board[row][col]
@@ -22,7 +22,7 @@ public class PlayerBoard {
 
 
     // Used for the begine of the game, just fill the whole board by '0'
-    public PlayerBoard() {
+    public UserPlayer() {
         // fill the board by 0 for no ship at the position
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -171,7 +171,7 @@ public class PlayerBoard {
     }
 
     // input row and col to return the char in the position in the board
-    public char getBoardByPos(int row, int col) {
+    public char getCharByPos(int row, int col) {
 
         if (row >= 0 && row <= 10 && col >= 0 && col <= 10)
             return board[row][col];
