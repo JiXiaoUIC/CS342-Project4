@@ -24,7 +24,6 @@ public class Game extends JFrame implements ActionListener{
 	private JTextField shipRow = new JTextField();
 	private JTextField shipCol = new JTextField();
 	private JTextField vertOrHor = new JTextField();
-	private BoardBack backbox;
 	
 
 
@@ -33,7 +32,6 @@ public class Game extends JFrame implements ActionListener{
 		
 		this.main = gameClient;
 
-		BoardBack backbox = new BoardBack();
 		//backbox.startGame();
 		setBoard();
 		
@@ -76,7 +74,7 @@ public class Game extends JFrame implements ActionListener{
 				{
 					update();
 				
-					if(backbox.checkAllShipsWasSet(backbox.playerClient) == false)
+					if(checkAllShipsWasSet() == false)
 					{
 						Object[] message2 = {
 								"You have succeeded to place the ship",
@@ -122,7 +120,7 @@ public class Game extends JFrame implements ActionListener{
 				String row = shipRow.getText();
 				String col = shipCol.getText();
 
-				boolean b = backbox.deleteShip(backbox.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1);
+				boolean b =deleteShip(type,Integer.parseInt(row)-1,Integer.parseInt(col)-1);
 			
 				update();
 	
@@ -135,36 +133,7 @@ public class Game extends JFrame implements ActionListener{
 		
 		
 		
-		JMenuItem replaceShip = new JMenuItem("Replace Ships");
-		replaceShip.addActionListener(new ActionListener() {
-			// display message dialog when user selects About...
-			public void actionPerformed(ActionEvent event) {
-				
-				
-				//while(backbox.checkAllShipsWasSet(backbox.playerClient) == false){
-					
-				Object[] message = {
-					    "Type of Ship:\n A: Aircraft Carrier \n B: Battle Ship \n D: Destroyer \n S: Submarine \n P: Patrol Boat ", shipType,
-					    "Row", shipRow,
-					    "Col", shipCol,
-					    "1 for Vertical / 2 for Horizontal", vertOrHor
-					};
-				int option = JOptionPane.showConfirmDialog(null, message, "Place Ship", JOptionPane.OK_CANCEL_OPTION);
-				String type = shipType.getText();
-				String row = shipRow.getText();
-				String col = shipCol.getText();
-				String vertHor = vertOrHor.getText();
 
-				boolean a = backbox.replaceShip(backbox.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1,Integer.parseInt(vertHor));
-			
-				update();
-
-			 }
-			//}
-
-			
-		} // end anonymous inner class
-		);
 		
 
 		JMenuItem Attack = new JMenuItem("Attack");
@@ -278,7 +247,6 @@ public class Game extends JFrame implements ActionListener{
 		Exit.add(Exit2);
 		Ship.add(placeShip);
 		Ship.add(deleteShip);
-		Ship.add(replaceShip);
 		Game.add(Attack);
 		Help.add(interfaceMenuItem);
 		menubar.add(Ship);
@@ -641,10 +609,64 @@ public class Game extends JFrame implements ActionListener{
     }
 
 
+    public boolean checkAllShipsWasSet() {
+        int checkA = 0;
+        int checkB = 0;
+        int checkD = 0;
+        int checkS = 0;
+        int checkP = 0;
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (box[i][j].getText().contains("A"))
+                    checkA++;
+                else if (box[i][j].getText().contains("B"))
+                    checkB++;
+                else if (box[i][j].getText().contains("D"))
+                    checkD++;
+                else if (box[i][j].getText().contains("S"))
+                    checkS++;
+                else if (box[i][j].getText().contains("P"))
+                    checkP++;
+            }
+        }
+
+        // if all ship place finish, return true
+        if (checkA == 5 && checkB == 4 && checkD == 3 && checkS == 3 && checkP == 2)
+            return true;
+
+        // else return false
+        return false;
+    }
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean deleteShip( String ship, int row, int col) {
+        // in case wrong String input, return false, fail to place ship
+        if (!ship.contains("A") && !ship.contains("B") && !ship.contains("D") && !ship.contains("S") && !ship.contains("P"))
+            return false;
+
+        boolean shipReplace = false;
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (box[i][j].getText().contains(ship))
+                {
+                    shipReplace = true;
+                    box[i][j].setText("0");
+                }
+            }
+        }
+
+        if (shipReplace == false)
+            return false;
+
+        return true;
+    }
+
 
 }
