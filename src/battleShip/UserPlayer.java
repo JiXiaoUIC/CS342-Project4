@@ -24,7 +24,9 @@ public class UserPlayer {
     // Used for the begine of the game, just fill the whole board by '0'
     public UserPlayer() {
         // fill the board by 0 for no ship at the position
-        for (int i = 0; i < 10; i++) {
+        board = new char[10][10];
+    	
+    	for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 board[i][j] = '0';
             }
@@ -39,6 +41,11 @@ public class UserPlayer {
         // row: 0-9; col: 0-9; 1 for vertical, 2 for horizontal;
         // the position of the row and col is the top or left the ship position
 
+    	for(int i = 0 ; i <10; i++)
+    		for(int j=0 ; j <10; j++)
+    			if(board[i][j]==ship)
+    				return false;
+    	
         if (ship == 'A') {
             if (verOrHor == 1 && row <= 5) {
                 for (int i = row; i < row + 5; i++) {
@@ -207,7 +214,3 @@ public class UserPlayer {
         return false;
     }
 }
-
-
-
-
