@@ -168,8 +168,7 @@ class CommunicationThread extends Thread
          ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
       
         int array[] = new int[2];
-       while ( in.readObject() != null ){
-        array = (int[]) in.readObject();
+       while ( ( array = (int[]) in.readObject()) != null ){
        	game.beHit(array[0],array[1]);
        }
 //       	

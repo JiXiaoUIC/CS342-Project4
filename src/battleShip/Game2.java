@@ -24,7 +24,7 @@ public class Game2 extends JFrame implements ActionListener{
 	private JTextField shipRow = new JTextField();
 	private JTextField shipCol = new JTextField();
 	private JTextField vertOrHor = new JTextField();
-	private BoardBack backBoard;
+	private BoardBack backbox;
 	
 
 
@@ -33,8 +33,8 @@ public class Game2 extends JFrame implements ActionListener{
 		
 		this.main = communicationThread;
 
-		BoardBack backBoard = new BoardBack();
-		//backBoard.startGame();
+		BoardBack backbox = new BoardBack();
+		//backbox.startGame();
 		setBoard();
 		
 		JMenuBar menubar = new JMenuBar();
@@ -49,7 +49,7 @@ public class Game2 extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent event) {
 				
 				
-				//while(backBoard.checkAllShipsWasSet(backBoard.playerClient) == false){
+				//while(backbox.checkAllShipsWasSet(backbox.playerClient) == false){
 					
 				Object[] message = {
 					    "Type of Ship:\n A: Aircraft Carrier \n B: Battle Ship \n D: Destroyer \n S: Submarine \n P: Patrol Boat ", shipType,
@@ -63,7 +63,7 @@ public class Game2 extends JFrame implements ActionListener{
 				String col = shipCol.getText();
 				String vertHor = vertOrHor.getText();
 
-				boolean a = backBoard.placeShip(backBoard.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1,Integer.parseInt(vertHor));
+				boolean a =setShip(type,Integer.parseInt(row)-1,Integer.parseInt(col)-1,Integer.parseInt(vertHor));
 			
 				if( a == false)
 				{
@@ -74,9 +74,9 @@ public class Game2 extends JFrame implements ActionListener{
 				}
 				else
 				{
-					update(backBoard.playerClient);
+					update();
 				
-					if(backBoard.checkAllShipsWasSet(backBoard.playerClient) == false)
+					if(backbox.checkAllShipsWasSet(backbox.playerClient) == false)
 					{
 						Object[] message2 = {
 								"You have succeeded to place the ship",
@@ -110,7 +110,7 @@ public class Game2 extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent event) {
 				
 				
-				//while(backBoard.checkAllShipsWasSet(backBoard.playerClient) == false){
+				//while(backbox.checkAllShipsWasSet(backbox.playerClient) == false){
 					
 				Object[] message2 = {
 					    "Type of Ship:\n A: Aircraft Carrier \n B: Battle Ship \n D: Destroyer \n S: Submarine \n P: Patrol Boat ", shipType,
@@ -122,9 +122,9 @@ public class Game2 extends JFrame implements ActionListener{
 				String row = shipRow.getText();
 				String col = shipCol.getText();
 
-				boolean b = backBoard.deleteShip(backBoard.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1);
+				boolean b = backbox.deleteShip(backbox.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1);
 			
-				update(backBoard.playerClient);
+				update();
 	
 			 }
 			//}
@@ -141,7 +141,7 @@ public class Game2 extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent event) {
 				
 				
-				//while(backBoard.checkAllShipsWasSet(backBoard.playerClient) == false){
+				//while(backbox.checkAllShipsWasSet(backbox.playerClient) == false){
 					
 				Object[] message = {
 					    "Type of Ship:\n A: Aircraft Carrier \n B: Battle Ship \n D: Destroyer \n S: Submarine \n P: Patrol Boat ", shipType,
@@ -155,9 +155,9 @@ public class Game2 extends JFrame implements ActionListener{
 				String col = shipCol.getText();
 				String vertHor = vertOrHor.getText();
 
-				boolean a = backBoard.replaceShip(backBoard.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1,Integer.parseInt(vertHor));
+				boolean a = backbox.replaceShip(backbox.playerClient,type,Integer.parseInt(row)-1,Integer.parseInt(col)-1,Integer.parseInt(vertHor));
 			
-				update(backBoard.playerClient);
+				update();
 
 			 }
 			//}
@@ -174,7 +174,7 @@ public class Game2 extends JFrame implements ActionListener{
 				
 				
 	
-//				if(backBoard.checkAllShipsWasSet(backBoard.playerClient) == true &&backBoard.checkAllShipsWasSet(backBoard.playerServer) == true )	
+//				if(backbox.checkAllShipsWasSet(backbox.playerClient) == true &&backbox.checkAllShipsWasSet(backbox.playerServer) == true )	
 //				{
 					Object[] message = {
 							"Please Select row/col to attack",
@@ -184,13 +184,9 @@ public class Game2 extends JFrame implements ActionListener{
 					int option = JOptionPane.showConfirmDialog(null, message, "Attack", JOptionPane.OK_CANCEL_OPTION);
 					String row = shipRow.getText();
 					String col = shipCol.getText();
-	
-					
-					
-					backBoard.clientAttack(Integer.parseInt(row)-1,Integer.parseInt(col)-1);
-					
+					//communicationThread.doSendMessage(Integer.parseInt(row)-1,Integer.parseInt(col)-1);	
 					box2[Integer.parseInt(row)-1][Integer.parseInt(col)-1].setIcon(new ImageIcon(getClass().getResource("batt103.gif")));
-					update(backBoard.playerClient);
+					update();
 
 			 
 //				}
@@ -231,15 +227,15 @@ public class Game2 extends JFrame implements ActionListener{
 	  	                  +"\n"
 
 	  	                  +"Windows:\n"
-	  	                  + "Upper window is your board. You can place your ship and check a status of your ship.\n"
-	  	                  + "Lower window is a board to let you know where you attacked.\n"
+	  	                  + "Upper window is your box. You can place your ship and check a status of your ship.\n"
+	  	                  + "Lower window is a box to let you know where you attacked.\n"
 	  	                  +"\n"
 	  	                  
 	  	                  +"How to play :\n"
 	  	                  +"1. Make a Server :\n"
 	  	                  +"2. If you are a server user, wait for a client to join \n"
 	  	                  +"3. If you are a client user, join to a server \n"
-	  	                  +"4. place ships to the board, wait for both player to complete placing ships \n"
+	  	                  +"4. place ships to the box, wait for both player to complete placing ships \n"
 	  	                  +"5. With Attack feature, please attack each other until one of player loses \n"
 	  	                 
 	  	                  ,"How to use our interface", JOptionPane.PLAIN_MESSAGE);
@@ -302,51 +298,84 @@ public class Game2 extends JFrame implements ActionListener{
 		return "done";
 	}
 		
-	void beHit( int i, int j )
-	{
-		//ImageIcon image = new ImageIcon(getClass().getResource("batt100.gif"));
-	    	box[i-1][j-1].setIcon(new ImageIcon(getClass().getResource("batt103.gif")));       	
-	   
-	}
+	
 
 //	
-	void update(UserPlayer player)
+	void update()
 	{
 		for(int r = 0; r < 10; r++){
 	        for(int c = 0; c < 10; c++){
 	 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
 	 	      // box[r][c].setText();
-	 	       if((player.board[r][c]).contains("*T"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt1.gif")));
-	 	       }
-	 	       else if(player.board[r][c].contains("*E"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt5.gif")));
-	 	       }
-	 	       else if(player.board[r][c].contains("*"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt3.gif")));
-	 	       }
-	 	       
-	 	      if(player.board[r][c].contains("&T"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt6.gif")));
-	 	       }
-	 	       else if(player.board[r][c].contains("&E"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt10.gif")));
-	 	       }
-	 	       else if(player.board[r][c].contains("&"))
-	 	       {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt8.gif")));
-	 	       }
-	 	       
-	 	      if(player.board[r][c].contains("0"))
-	 	      {
-	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-
-	 	      }
+	        	if(box[r][c].getText().contains("a") || box[r][c].getText().contains("b")||box[r][c].getText().contains("d")||box[r][c].getText().contains("s")||box[r][c].getText().contains("p"))
+		 	    {
+		 	    	   if((box[r][c]).getText().contains("*T"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt201.gif")));
+			 	       }
+			 	       else if(box[r][c].getText().contains("*E"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt203.gif")));
+			 	       }
+			 	       else if(box[r][c].getText().contains("*"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt202.gif")));
+			 	       }
+		 	    	  if(box[r][c].getText().contains("&T"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt204.gif")));
+			 	       }
+			 	       else if(box[r][c].getText().contains("&E"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt206.gif")));
+			 	       }
+			 	       else if(box[r][c].getText().contains("&"))
+			 	       {
+			 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt205.gif")));
+			 	       }
+		 	      
+		 	      
+		 	    }
+		        else{
+		           if((box[r][c]).getText().contains("F"))
+			 	   {
+		        	   box[r][c].setIcon(new ImageIcon(getClass().getResource("batt102.gif")));
+			 	   } 		        	
+		        	
+		           else if((box[r][c]).getText().contains("*T"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt1.gif")));
+		 	       }
+		 	       else if(box[r][c].getText().contains("*E"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt5.gif")));
+		 	       }
+		 	       else if(box[r][c].getText().contains("*"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt3.gif")));
+		 	       }
+		 	       
+		 	      if(box[r][c].getText().contains("&T"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt6.gif")));
+		 	       }
+		 	       else if(box[r][c].getText().contains("&E"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt10.gif")));
+		 	       }
+		 	       else if(box[r][c].getText().contains("&"))
+		 	       {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt8.gif")));
+		 	       }
+		 	       
+		 	      if(box[r][c].getText().contains("0"))
+		 	      {
+		 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
+	
+		 	      }
+		        }
+	 	      
+	 	      
 	        }
 	    }	
 	
@@ -380,7 +409,8 @@ public class Game2 extends JFrame implements ActionListener{
 	    for(int r = 0; r < 10; r++){
 	        for(int c = 0; c < 10; c++){
 	           box[r][c]= new JButton();
-	 	       box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
+	           box[r][c].setText("0");
+	           box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
 	 	      
 	 			p.add(box[r][c]);
 	        }
@@ -414,6 +444,201 @@ public class Game2 extends JFrame implements ActionListener{
 	    pack();
 	    setVisible(true);
 	}
+
+	
+    public boolean setShip(String ship, int row, int col, int verOrHor) {
+        // row: 0-9; col: 0-9; 1 for vertical, 2 for horizontal;
+        // the position of the row and col is the top or left the ship position
+
+    	for(int i = 0 ; i <10; i++)
+    		for(int j=0 ; j <10; j++)
+    			if(box[i][j].getText().contains(ship))
+    				return false;
+    	
+        if (ship.contains("A")) {
+            if (verOrHor == 1 && row <= 5) {
+                for (int i = row; i < row + 5; i++) {
+                    if (box[i][col].getText() == "0") {
+                       if(i == row+4)
+                    	   box[i][col].setText("A"+"&"+"E");
+                       else if( i == row)
+                   		box[i][col].setText("A"+"&"+"T");
+                       else
+                    	   box[i][col].setText("A"+"&"+i);
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (verOrHor == 2 && col <= 5) {
+                for (int j = col; j < col + 5; j++) {
+                    if (box[row][j].getText() == "0") {
+                    	if(j == col+4)
+                     	   box[row][j].setText("A"+"*"+"E");
+                    	else if( j == col)
+                       		box[row][j].setText("A"+"*"+"T");
+                     	else
+                     		box[row][j].setText("A"+"*"+j);
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else if (ship.contains("B")) {
+            if (verOrHor == 1 && row <= 6) {
+                for (int i = row; i < row + 4; i++) {
+                    if (box[i][col].getText() == "0") {
+                    	if(i == row+3)
+                     	   box[i][col].setText("B"+"&"+"E");
+                    	else if( i == row)
+                    		box[i][col].setText("B"+"&"+"T");
+                    	else
+                     		box[i][col].setText("B"+"&"+i);
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (verOrHor == 2 && col <= 6) {
+                for (int j = col; j < col + 4; j++) {
+                    if (box[row][j].getText() == "0") {
+                    	if(j == col+3)
+                      	   box[row][j].setText("B"+"*"+"E");
+                    	else if( j == col)
+                       		box[row][j].setText("B"+"*"+"T");
+                    	else
+                    		box[row][j].setText("B"+"*"+j);
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else if (ship.contains("D")) {
+            if (verOrHor == 1 && row <= 7) {
+                for (int i = row; i < row + 3; i++) {
+                    if (box[i][col].getText() == "0") {
+                    	if(i == row+2)
+                     	   box[i][col].setText("D"+"&"+"E");
+                    	else if( i == row)
+                       		box[i][col].setText("D"+"&"+"T");
+                     	else
+                     		box[i][col].setText("D"+"&"+i);
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (verOrHor == 2 && col <= 7) {
+                for (int j = col; j < col + 3; j++) {
+                    if (box[row][j].getText() == "0") {
+                    	if(j == col+2)
+                       	   box[row][j].setText("D"+"*"+"E");
+                    	else if( j == col)
+                       		box[row][j].setText("D"+"*"+"T");
+                     	else
+                     		box[row][j].setText("D"+"*"+j);
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else if (ship.contains("S")) {
+            if (verOrHor == 1 && row <= 7) {
+                for (int i = row; i < row + 3; i++) {
+                    if (box[i][col].getText() == "0") {
+                    	if(i == row+2)
+                     	   box[i][col].setText("S"+"&"+"E");
+                    	else if( i == row)
+                       		box[i][col].setText( "S"+"&"+"T");
+                     	else
+                     		box[i][col].setText("S"+"&"+i);
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (verOrHor == 2 && col <= 7) {
+                for (int j = col; j < col + 3; j++) {
+                    if (box[row][j].getText()=="0") {
+                    	if(j == col+2)
+                       	   box[row][j].setText("S"+"*"+"E");
+                    	else if( j == col)
+                       		box[row][j].setText("S"+"*"+"T");
+                     	else
+                     		box[row][j].setText("S"+"*"+j);
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else if (ship.contains("P")) {
+            if (verOrHor == 1 && row <= 8) {
+                for (int i = row; i < row + 2; i++) {
+                    if (box[i][col].getText() == "0") {
+                    	if(i == row+1)
+                     	   box[i][col].setText("P"+"&"+"E");
+                    	else
+                       		box[i][col].setText("P"+"&"+"T");
+                    } else {
+                        return false;
+                    }
+                }
+            } else if (verOrHor == 2 && col <= 8) {
+                for (int j = col; j < col + 2; j++) {
+                    if (box[row][j].getText() == "0") {
+                    	if(j == col+1)
+                       	   box[row][j].setText("P"+"*"+"E");
+                     	else
+                     		box[row][j].setText("P"+"*"+"T");
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        // success to set a ship
+        return true;
+    }
+    
+    public void beHit(int row, int col) {
+
+        String hit = box[row][col].getText();
+
+        if (hit.contains("A"))
+        {
+        	box[row][col].setText( "a" + box[row][col].getText().substring(1, 3)); 
+        }
+        else if (hit.contains("B"))
+        {
+        	box[row][col].setText( "b" + box[row][col].getText().substring(1, 3)); 
+        } 
+        else if (hit.contains("D"))
+        {
+        	box[row][col].setText( "d" + box[row][col].getText().substring(1, 3));    
+        } 
+        else if (hit.contains("S"))
+        {
+        	box[row][col].setText( "s" + box[row][col].getText().substring(1, 3));       
+        } 
+        else if (hit.contains("P"))
+        {
+        	box[row][col].setText( "p" + box[row][col].getText().substring(1, 3));        
+        } 
+        else if (hit == "0") {
+            box[row][col].setText("F");
+        }
+        
+        update();
+    }
 
 
 	@Override
