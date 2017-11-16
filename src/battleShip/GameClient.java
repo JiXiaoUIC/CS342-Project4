@@ -7,7 +7,9 @@ import javax.swing.*;
 
 public class GameClient extends JFrame implements ActionListener
 {  
-  static GameClient client1 = null;
+  static GameClient client = null;
+  static GameClient server = null;
+
 
   // GUI items
   JButton sendButton;
@@ -123,7 +125,9 @@ public class GameClient extends JFrame implements ActionListener
                                         echoSocket.getInputStream()));
             sendButton.setEnabled(true);
             connected = true;
-   		    game = new Game(client1);
+   		    game = new Game(client);
+   		    game = new Game(server);
+
             connectButton.setText("Disconnect from Server");
         } catch (NumberFormatException e) {
             history.insert ( "Server Port must be an integer\n", 0);

@@ -26,9 +26,9 @@ public class BoardBack {
     }
 
     // placeShip(player, ship type, row num, col num, 1 for vertical / 2 for horizontal)
-    public boolean placeShip(UserPlayer player, char ship, int row, int col, int verOrHor) {
-        // in case wrong char input, return false, fail to place ship
-        if (ship != 'A' && ship != 'B' && ship != 'D' && ship != 'S' && ship != 'P')
+    public boolean placeShip(UserPlayer player, String ship, int row, int col, int verOrHor) {
+        // in case wrong String input, return false, fail to place ship
+        if (!ship.contains("A") && !ship.contains("B") && !ship.contains("D") && !ship.contains("S") && !ship.contains("P"))
             return false;
 
         // place ship
@@ -37,19 +37,19 @@ public class BoardBack {
     }
 
     // this methos can only use after ship placed and before the game start
-    public boolean deleteShip(UserPlayer player, char ship, int row, int col) {
-        // in case wrong char input, return false, fail to place ship
-        if (ship != 'A' && ship != 'B' && ship != 'D' && ship != 'S' && ship != 'P')
+    public boolean deleteShip(UserPlayer player, String ship, int row, int col) {
+        // in case wrong String input, return false, fail to place ship
+        if (!ship.contains("A") && !ship.contains("B") && !ship.contains("D") && !ship.contains("S") && !ship.contains("P"))
             return false;
 
         boolean shipReplace = false;
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (player.board[i][j] == ship)
+                if (player.board[i][j].contains(ship))
                 {
                     shipReplace = true;
-                    player.board[i][j] = '0';
+                    player.board[i][j] = "0";
                 }
             }
         }
@@ -60,7 +60,7 @@ public class BoardBack {
         return true;
     }
 
-    public boolean replaceShip(UserPlayer player, char ship, int row, int col, int verOrHor) {
+    public boolean replaceShip(UserPlayer player, String ship, int row, int col, int verOrHor) {
         // delete ship
         boolean shipDeleted;
         shipDeleted = deleteShip(player, ship, row, col);
@@ -86,15 +86,15 @@ public class BoardBack {
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (player.board[i][j] == 'A')
+                if (player.board[i][j].contains("A"))
                     checkA++;
-                else if (player.board[i][j] == 'B')
+                else if (player.board[i][j].contains("B"))
                     checkB++;
-                else if (player.board[i][j] == 'D')
+                else if (player.board[i][j].contains("D"))
                     checkD++;
-                else if (player.board[i][j] == 'S')
+                else if (player.board[i][j].contains("S"))
                     checkS++;
-                else if (player.board[i][j] == 'P')
+                else if (player.board[i][j].contains("P"))
                     checkP++;
             }
         }
@@ -109,24 +109,24 @@ public class BoardBack {
 
     // this methos used for server attack client,
     // that means client is hit by server
-    public char serverAttack(int row, int col) {
+    public String serverAttack(int row, int col) {
         return playerClient.beHit(row, col);
     }
 
     // this methos used for client attack server,
     // that means server is hit by client
-    public char clientAttack(int row, int col) {
+    public String clientAttack(int row, int col) {
         return playerServer.beHit(row, col);
     }
 
     public void nuclearBomb(UserPlayer attacker, UserPlayer playerBeHit) {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (playerBeHit.board[i][j] == '0' || playerBeHit.board[i][j] == '1')
-                    playerBeHit.board[i][j] = '1';
-                else if (playerBeHit.board[i][j] == 'A' || playerBeHit.board[i][j] == 'B'
-                        || playerBeHit.board[i][j] == 'D' || playerBeHit.board[i][j] == 'S'
-                        || playerBeHit.board[i][j] == 'P')
+                if (playerBeHit.board[i][j].contains("0") || playerBeHit.board[i][j].contains("1"))
+                    playerBeHit.board[i][j] = "1";
+                else if (playerBeHit.board[i][j].contains("A") || playerBeHit.board[i][j].contains("B")
+                        || playerBeHit.board[i][j].contains("D") || playerBeHit.board[i][j].contains("S")
+                        || playerBeHit.board[i][j].contains("P"))
                     playerBeHit.board[i][j] += 32;
             }
         }
@@ -150,12 +150,12 @@ public class BoardBack {
         return false;
     }
 
-    public char getBoardByPos(UserPlayer player, int row, int col) {
+    public String getBoardByPos(UserPlayer player, int row, int col) {
         if (row >= 0 && row <= 9 && col >= 0 && col <= 9)
             return player.board[row][col];
 
         // in case the unavailable position
-        return '~';
+        return "~";
     }
 
 }

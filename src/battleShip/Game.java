@@ -59,7 +59,7 @@ public class Game extends JFrame implements ActionListener{
 				String col = shipCol.getText();
 				String vertHor = vertOrHor.getText();
 
-				boolean a = backBoard.placeShip(backBoard.playerClient,type.charAt(0),Integer.parseInt(row),Integer.parseInt(col),Integer.parseInt(vertHor));
+				boolean a = backBoard.placeShip(backBoard.playerClient,type,Integer.parseInt(row),Integer.parseInt(col),Integer.parseInt(vertHor));
 			
 				if( a == false)
 				{
@@ -70,12 +70,7 @@ public class Game extends JFrame implements ActionListener{
 				}
 				else
 				{
-					for(int r = 0; r < 10; r++){
-				        for(int c = 0; c < 10; c++){
-				 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-				 	       box[r][c].setText(Character.toString(backBoard.playerClient.board[r][c]));
-				        }
-				    }	
+					update(backBoard.playerClient);
 				
 					if(backBoard.checkAllShipsWasSet(backBoard.playerClient) == false)
 					{
@@ -123,14 +118,10 @@ public class Game extends JFrame implements ActionListener{
 				String row = shipRow.getText();
 				String col = shipCol.getText();
 
-				boolean b = backBoard.deleteShip(backBoard.playerClient,type.charAt(0),Integer.parseInt(row),Integer.parseInt(col));
+				boolean b = backBoard.deleteShip(backBoard.playerClient,type,Integer.parseInt(row),Integer.parseInt(col));
 			
-				for(int r = 0; r < 10; r++){
-			        for(int c = 0; c < 10; c++){
-			 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-			 	       box[r][c].setText(Character.toString(backBoard.playerClient.board[r][c]));
-			        }
-			    }	
+				update(backBoard.playerClient);
+	
 			 }
 			//}
 
@@ -160,14 +151,10 @@ public class Game extends JFrame implements ActionListener{
 				String col = shipCol.getText();
 				String vertHor = vertOrHor.getText();
 
-				boolean a = backBoard.replaceShip(backBoard.playerClient,type.charAt(0),Integer.parseInt(row),Integer.parseInt(col),Integer.parseInt(vertHor));
+				boolean a = backBoard.replaceShip(backBoard.playerClient,type,Integer.parseInt(row),Integer.parseInt(col),Integer.parseInt(vertHor));
 			
-				for(int r = 0; r < 10; r++){
-			        for(int c = 0; c < 10; c++){
-			 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-			 	       box[r][c].setText(Character.toString(backBoard.playerClient.board[r][c]));
-			        }
-			    }	
+				update(backBoard.playerClient);
+
 			 }
 			//}
 
@@ -195,13 +182,8 @@ public class Game extends JFrame implements ActionListener{
 					String col = shipCol.getText();
 	
 					backBoard.clientAttack(Integer.parseInt(row),Integer.parseInt(col));
-				
-					for(int r = 0; r < 10; r++){
-				        for(int c = 0; c < 10; c++){
-				 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-				 	       box[r][c].setText(Character.toString(backBoard.playerClient.board[r][c]));
-				        }
-				    }	
+					update(backBoard.playerClient);
+
 			 
 				}
 				else
@@ -234,10 +216,42 @@ public class Game extends JFrame implements ActionListener{
 	{
 		for(int r = 0; r < 10; r++){
 	        for(int c = 0; c < 10; c++){
-		 	       box[r][c].setText(Character.toString(player.board[r][c]));
 	 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
+	 	      // box[r][c].setText();
+	 	       if((player.board[r][c]).contains("*T"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt1.gif")));
+	 	       }
+	 	       else if(player.board[r][c].contains("*E"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt5.gif")));
+	 	       }
+	 	       else if(player.board[r][c].contains("*"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt3.gif")));
+	 	       }
+	 	       
+	 	      if(player.board[r][c].contains("&T"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt6.gif")));
+	 	       }
+	 	       else if(player.board[r][c].contains("&E"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt10.gif")));
+	 	       }
+	 	       else if(player.board[r][c].contains("&"))
+	 	       {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt8.gif")));
+	 	       }
+	 	       
+	 	      if(player.board[r][c].contains("0"))
+	 	      {
+	 	    	  box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
+
+	 	      }
 	        }
-	    }
+	    }	
+	
 	}
 	
 	void close()
@@ -254,8 +268,8 @@ public class Game extends JFrame implements ActionListener{
 	    for(int r = 0; r < 10; r++){
 	        for(int c = 0; c < 10; c++){
 	           box[r][c]= new JButton();
-	 	      // box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
-	 	       box[r][c].setText("0");
+	 	       box[r][c].setIcon(new ImageIcon(getClass().getResource("batt100.gif")));
+	 	      
 	 			p.add(box[r][c]);
 	        }
 	    }

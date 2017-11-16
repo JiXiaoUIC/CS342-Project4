@@ -141,6 +141,8 @@ class CommunicationThread extends Thread
  //private boolean serverContinue = true;
  private Socket clientSocket;
  private GameServer gui;
+ private int count = 0;
+
 
 
 
@@ -155,7 +157,6 @@ class CommunicationThread extends Thread
  public void run()
    {
     System.out.println ("New Communication Thread Started");
-
     try { 
          PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
                                       true); 
@@ -163,7 +164,7 @@ class CommunicationThread extends Thread
                  new InputStreamReader( clientSocket.getInputStream())); 
 
          String inputLine; 
-
+       
          while ((inputLine = in.readLine()) != null) 
              { 
               System.out.println ("Server: " + inputLine); 
