@@ -14,6 +14,10 @@ public class GameServer extends JFrame implements ActionListener{
   JLabel portInfo;
   JTextArea history;
   private boolean running;
+  static GameClient server = null;
+
+
+
 
   // Network Items
   boolean serverContinue;
@@ -57,25 +61,19 @@ public class GameServer extends JFrame implements ActionListener{
       setVisible( true );
 
    } // end CountDown constructor
-
-//   public static void main( String args[] )
-//   { 
-//	   GameServer application = new GameServer();
-//      application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//   }
-
-    // handle button event
-    public void actionPerformed( ActionEvent event )
+   public void actionPerformed( ActionEvent event )
     {
        if (running == false)
        {
          new ConnectionThread (this);
+
        }
        else
        {
          serverContinue = false;
          ssButton.setText ("Start Listening");
          portInfo.setText (" Not Listening ");
+   	     
        }
     }
 
@@ -85,8 +83,8 @@ public class GameServer extends JFrame implements ActionListener{
 
 class ConnectionThread extends Thread
  {
-	GameServer gui;
-   
+	
+	GameServer gui;    
    public ConnectionThread (GameServer es3)
    {
      gui = es3;
@@ -96,11 +94,11 @@ class ConnectionThread extends Thread
    public void run()
    {
      gui.serverContinue = true;
-     
      try 
      { 
        gui.serverSocket = new ServerSocket(0); 
        gui.portInfo.setText("Listening on Port: " + gui.serverSocket.getLocalPort());
+
        System.out.println ("Connection Socket Created");
        try { 
          while (gui.serverContinue)
@@ -142,6 +140,8 @@ class CommunicationThread extends Thread
  private Socket clientSocket;
  private GameServer gui;
  private int count = 0;
+ private Game2 game;
+
 
 
 
@@ -151,7 +151,9 @@ class CommunicationThread extends Thread
     clientSocket = clientSoc;
     gui = ec3;
     gui.history.insert ("Comminucating with Port" + clientSocket.getLocalPort()+"\n", 0);
+    game = new Game2(this);
     start();
+    
    }
 
  public void run()
@@ -160,23 +162,35 @@ class CommunicationThread extends Thread
     try { 
          PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
                                       true); 
-         BufferedReader in = new BufferedReader( 
-                 new InputStreamReader( clientSocket.getInputStream())); 
-
-         String inputLine; 
+        
+         
+         
+         ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+      
+        int array[] = new int[2];
+       while ( in.readObject() != null ){
+        array = (int[]) in.readObject();
+       	game.beHit(array[0],array[1]);
+       }
+//       	
+       	
+        // String inputLine; 
        
-         while ((inputLine = in.readLine()) != null) 
-             { 
-              System.out.println ("Server: " + inputLine); 
-              gui.history.insert (inputLine+"\n", 0);
-              out.println(inputLine); 
-
-              if (inputLine.equals("Bye.")) 
-                  break; 
-
-              if (inputLine.equals("End Server.")) 
-                  gui.serverContinue = false; 
-             } 
+//         while ((inputLine = in.readLine()) != null) 
+//             { 
+//              System.out.println ("Server: " + inputLine); 
+//              gui.history.insert (inputLine+"\n", 0);
+//
+//              if( inputLine == " ")
+//              out.println(inputLine); 
+//
+//              
+//              if (inputLine.equals("Bye.")) 
+//                  break; 
+//
+//              if (inputLine.equals("End Server.")) 
+//                  gui.serverContinue = false; 
+//             } 
 
          out.close(); 
          in.close(); 
@@ -186,7 +200,10 @@ class CommunicationThread extends Thread
         { 
          System.err.println("Problem with Communication Server");
          //System.exit(1); 
-        } 
+        } catch (ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
     }
 } 
 

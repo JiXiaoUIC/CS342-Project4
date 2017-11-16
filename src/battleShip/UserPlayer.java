@@ -172,10 +172,8 @@ public class UserPlayer {
                     if (board[i][col] == "0") {
                     	if(i == row+1)
                      	   board[i][col] = "P"+"&"+"E";
-                    	else if( i == row)
+                    	else
                        		board[i][col] = "P"+"&"+"T";
-                     	else
-                     		board[i][col] = "P"+"&"+i;
                     } else {
                         return false;
                     }
@@ -186,7 +184,7 @@ public class UserPlayer {
                     	if(j == col+1)
                        	   board[row][j] = "P"+"*"+"E";
                      	else
-                     		board[row][j] = "P"+"*"+j;
+                     		board[row][j] = "P"+"*"+"T";
                     } else {
                         return false;
                     }

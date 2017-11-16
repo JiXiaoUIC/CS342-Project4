@@ -8,7 +8,6 @@ import javax.swing.*;
 public class GameClient extends JFrame implements ActionListener
 {  
   static GameClient client = null;
-  static GameClient server = null;
 
 
   // GUI items
@@ -24,7 +23,7 @@ public class GameClient extends JFrame implements ActionListener
   // Network Items
   boolean connected;
   Socket echoSocket;
-  PrintWriter out;
+  ObjectOutputStream out;
   BufferedReader in;
 
    // set up GUI
@@ -74,21 +73,13 @@ public class GameClient extends JFrame implements ActionListener
       setVisible( true );
 
    } // end CountDown constructor
-
-//   public static void main( String args[] )
-//   { 
-//	   GameClient application = new GameClient();
-//      application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//   }
-
-    // handle button event
     public void actionPerformed( ActionEvent event )
     {
        if ( connected && 
            (event.getSource() == sendButton || 
             event.getSource() == message ) )
        {
-         doSendMessage();
+       //  doSendMessage();
        }
        else if (event.getSource() == connectButton)
        {
@@ -97,12 +88,16 @@ public class GameClient extends JFrame implements ActionListener
        }
     }
 
-    public void doSendMessage()
+    public void doSendMessage(int  i , int j)
     {
       try
       {
-        out.println(message.getText());
-        history.insert ("From Server: " + in.readLine() + "\n" , 0);
+    	int array[] = new int[2];
+    	array[0] = i;
+    	array[1] = j;
+    	out.writeObject(array);
+
+//    	history.insert ("From Server: " + in.readLine() + "\n" , 0);
       }
       catch (IOException e) 
       {
@@ -120,13 +115,12 @@ public class GameClient extends JFrame implements ActionListener
             machineName = machineInfo.getText();
             portNum = Integer.parseInt(portInfo.getText());
             echoSocket = new Socket(machineName, portNum );
-            out = new PrintWriter(echoSocket.getOutputStream(), true);
+             out = new ObjectOutputStream(echoSocket.getOutputStream());
             in = new BufferedReader(new InputStreamReader(
                                         echoSocket.getInputStream()));
             sendButton.setEnabled(true);
             connected = true;
-   		    game = new Game(client);
-   		    game = new Game(server);
+   		    game = new Game(this);
 
             connectButton.setText("Disconnect from Server");
         } catch (NumberFormatException e) {

@@ -8,8 +8,8 @@ import javax.swing.*;
 
 
 
-public class Game extends JFrame implements ActionListener{
-	private GameClient main;
+public class Game2 extends JFrame implements ActionListener{
+	private CommunicationThread main;
 	private JPanel container;
 	private JPanel panel2;
 
@@ -28,10 +28,10 @@ public class Game extends JFrame implements ActionListener{
 	
 
 
-	public Game(GameClient client1)
+	public Game2(CommunicationThread communicationThread)
 	{
 		
-		this.main = client1;
+		this.main = communicationThread;
 
 		BoardBack backBoard = new BoardBack();
 		//backBoard.startGame();
@@ -185,7 +185,6 @@ public class Game extends JFrame implements ActionListener{
 					String row = shipRow.getText();
 					String col = shipCol.getText();
 	
-					client1.doSendMessage(Integer.parseInt(row),Integer.parseInt(col));
 					
 					
 					backBoard.clientAttack(Integer.parseInt(row)-1,Integer.parseInt(col)-1);
@@ -217,7 +216,7 @@ public class Game extends JFrame implements ActionListener{
 	            // display message dialog when user selects About...
 	            public void actionPerformed( ActionEvent event )
 	            {
-	            	JOptionPane.showMessageDialog(Game.this,
+	            	JOptionPane.showMessageDialog(Game2.this,
 	  	                  "Battle Ship, 4th project of CS342.\n"
 	  	                  +"Ship Menu:\n"
 	  	                  +"Place : Allowing the user to place ships.\n"
@@ -252,7 +251,7 @@ public class Game extends JFrame implements ActionListener{
 			About2.addActionListener(new ActionListener() {
 				// display message dialog when user selects About...
 				public void actionPerformed(ActionEvent event) {
-					JOptionPane.showMessageDialog(Game.this,
+					JOptionPane.showMessageDialog(Game2.this,
 		  	                  "Battle Ship, 4th project of CS342.\n"
 		  	                  +"Youlho Cha <ycha8@uic.edu>\n"
 		  	                  +"Liam Edelman <ledelma2@uic.edu>\n"
@@ -295,42 +294,21 @@ public class Game extends JFrame implements ActionListener{
 
 	}
 	
+
+
+
 	String finishSetUp()
 	{
 		return "done";
 	}
 		
-//	void beHit(int i, int j )
-//	{
-//		if (box[i][j].getText().contains("A") || box[i][j].getText().contains("B") || box[i][j].getText().contains("D") || box[i][j].getText().contains("S") || box[i][j].getText().contains("P")) {
-//            if( box[i][j].getIcon() == new ImageIcon(getClass().getResource("batt100.gif"))
-//            {
-//            	
-//            }
-//            	
-//		} else if (hit.contains("a") || hit.contains("b") || hit.contains("d") || hit.contains("s") || hit.contains("p")) {
-//            hit = "F";     // F means this position already hit
-//            return hit;
-//        } else if (hit == "0") {
-//            board[row][col] = "1";
-//            return hit;
-//        } else if (hit == "1") {
-//            hit = "F";     // F means this position already hit
-//            return hit;
-//        } else {
-//            return "~";     // in case error
-//        }
-//	}
-
-
-	
 	void beHit( int i, int j )
 	{
-		if( box[i][j].getIcon() == new ImageIcon(getClass().getResource("batt100.gif")))
-	    {
-			box[i][j].setIcon(new ImageIcon(getClass().getResource("batt103.gif")));       	
-	    }
+		//ImageIcon image = new ImageIcon(getClass().getResource("batt100.gif"));
+	    	box[i-1][j-1].setIcon(new ImageIcon(getClass().getResource("batt103.gif")));       	
+	   
 	}
+
 //	
 	void update(UserPlayer player)
 	{

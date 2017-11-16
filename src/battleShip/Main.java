@@ -40,7 +40,30 @@ public class Main extends JFrame implements ActionListener {
 		JMenu Connect = new JMenu("Connect");
 		JMenuItem Server = new JMenuItem("Server");
 		StatusBar statusBar = new StatusBar();
-		JMenu test = new JMenu("Test");
+		JMenu Help = new JMenu("Help");
+		JMenu About = new JMenu("About");
+		JMenuItem About2 = new JMenuItem("About");
+		JMenuItem Exit2 = new JMenuItem("Exit");
+
+		About2.addActionListener(new ActionListener() {
+			// display message dialog when user selects About...
+			public void actionPerformed(ActionEvent event) {
+				JOptionPane.showMessageDialog(Main.this,
+	  	                  "Battle Ship, 4th project of CS342.\n"
+	  	                  +"Youlho Cha <ycha8@uic.edu>\n"
+	  	                  +"Liam Edelman <ledelma2@uic.edu>\n"
+	  	                  +"Ji Xiao <jxiao22@uic.edu>"
+	  	                  +"2017-11-16\n"
+	  	                  +"Thank You\n"
+
+
+
+
+         ,"About", JOptionPane.PLAIN_MESSAGE);
+	            }
+			}
+		// end anonymous inner class
+		);
 
 		Server.addActionListener(new ActionListener() {
 			// display message dialog when user selects About...
@@ -75,10 +98,55 @@ public class Main extends JFrame implements ActionListener {
 		);
 
 		
+		  JMenuItem interfaceMenuItem = new JMenuItem( "Help" );
+	      interfaceMenuItem.setMnemonic( 'A' );
+	      Help.add( interfaceMenuItem );
+	      interfaceMenuItem.addActionListener(
+	         new ActionListener() {  // anonymous inner class
+	            // display message dialog when user selects About...
+	            public void actionPerformed( ActionEvent event )
+	            {
+	            	JOptionPane.showMessageDialog(Main.this,
+	  	                  "Battle Ship, 4th project of CS342.\n"
+	  	                  +"Connect Menu:\n"
+	  	                  +"Server : Allowing the user to make a server.\n"
+	  	                  +"Client : Allowing the user to connect to a server as a client.\n"
+	  	                  +"\n"
+	  	                  +"How to play :\n"
+	  	                  +"1. Make a Server :\n"
+	  	                  +"2. If you are a server user, wait for a client to join \n"
+	  	                  +"3. If you are a client user, join to a server \n"
+	  	                  +"4. place ships to the board, wait for both player to complete placing ships \n"
+	  	                  +"5. With Attack feature, please attack each other until one of player loses \n"
+	  	                 
+
+
+
+
+           ,"How to use our interface", JOptionPane.PLAIN_MESSAGE);
+	            }
+	         }  // end anonymous inner class
+	      ); 
+		
+		JMenu Exit = new JMenu("Exit");
+		Exit2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+					  System.exit(0);
+		            }
+				}
+			// end anonymous inner class
+		);	      
+		
 		Connect.add(Server);
 		Connect.add(Client);
+		About.add(About2);
+		Exit.add(Exit2);
 		//test.add(start);
 		menubar.add(Connect);
+		menubar.add(Help);
+		menubar.add(About);
+		menubar.add(Exit);
+
 		//menubar.add(test);
 		displayLabel = new JLabel("BattleShip", SwingConstants.CENTER);
 		getContentPane().setBackground(Color.WHITE);
