@@ -187,8 +187,6 @@ public class Game2 extends JFrame implements ActionListener{
 	  	                  +"Ship Menu:\n"
 	  	                  +"Place : Allowing the user to place ships.\n"
 	  	                  +"Delete : Allowing the user to place ship.\n"
-	  	                  +"Replace : Allowing the user to replace ship.\n"
-	  	                  +"Whenever you delete a ship, please use replace to place the ship agian\n"
 	  	                  +"\n"
 
 
@@ -651,21 +649,15 @@ public class Game2 extends JFrame implements ActionListener{
         if (!ship.contains("A") && !ship.contains("B") && !ship.contains("D") && !ship.contains("S") && !ship.contains("P"))
             return false;
 
-        boolean shipReplace = false;
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 if (box[i][j].getText().contains(ship))
                 {
-                    shipReplace = true;
                     box[i][j].setText("0");
                 }
             }
         }
-
-        if (shipReplace == false)
-            return false;
-
         return true;
     }
 }
